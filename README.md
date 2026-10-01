@@ -2,6 +2,8 @@
 
 A comprehensive project for learning and building REST APIs with Spring Boot 4.1.0, Java 26, Spring Data JPA, HATEOAS, and Spring Security.
 
+![Architecture Diagram](architecture_diagram.jpg)
+
 ## Tech Stack
 
 - **Java**: 26 (Oracle JDK 26)
