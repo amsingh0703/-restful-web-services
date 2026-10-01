@@ -12,44 +12,40 @@ public class UserDaoService {
 	// JPA/Hibernate > Database 
 	// UserDaoService > Static List  
 	
-	private static List<user> users = new ArrayList<>();
-	private static int usercount=0;
+	private static List<User> users = new ArrayList<>();
+	private static int userCount = 0;
 	
 	static {
-		users.add(new user(++usercount,"Adam",LocalDate.now().minusYears(30)));
-		users.add(new user(++usercount,"RAM",LocalDate.now().minusYears(20)));
-		users.add(new user(++usercount,"AMAN",LocalDate.now().minusYears(10)));
+		users.add(new User(++userCount, "Adam", LocalDate.now().minusYears(30)));
+		users.add(new User(++userCount, "RAM", LocalDate.now().minusYears(20)));
+		users.add(new User(++userCount, "AMAN", LocalDate.now().minusYears(10)));
 	}
 	
-	public List<user> findAll(){
+	public List<User> findAll() {
 		return users;
 	}
-	public user save(user user) {
-		user.setId(++usercount);
+
+	public User save(User user) {
+		user.setId(++userCount);
 		users.add(user);
 		return user;
 	}
 	
-	public user findOne(int id) {
-//				for (user user : users) {
-//				    if (user.getId().equals(id)) {
-//				        return user;
-//				    }
-//				}
-//
-//				throw new RuntimeException("User not found");
-//			}
-		Predicate<? super user> predicate = user -> user.getId().equals(id);
+	public User findOne(int id) {
+		Predicate<? super User> predicate = u -> u.getId().equals(id);
 
 		return users.stream()
 		            .filter(predicate)
 		            .findFirst()
-		            .orElse(null)	;
+		            .orElse(null);
 	}
 	
-	public void DeleteById(int id) {
-		Predicate<? super user> predicate = user -> user.getId().equals(id);
-		
+	public void deleteById(int id) {
+		Predicate<? super User> predicate = u -> u.getId().equals(id);
 		users.removeIf(predicate);
+	}
+
+	public void DeleteById(int id) {
+		deleteById(id);
 	}
 }

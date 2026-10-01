@@ -5,10 +5,8 @@ public class HelloWorldBean {
 	private String msg;
 
 	public HelloWorldBean(String msg) {
-		// TODO Auto-generated constructor stub
 		this.msg = msg;
 	}
-	
 
 	public String getMsg() {
 		return msg;
@@ -18,13 +16,16 @@ public class HelloWorldBean {
 		this.msg = msg;
 	}
 
+	public String getMessage() {
+		return msg;
+	}
+
+	public void setMessage(String message) {
+		this.msg = message;
+	}
 
 	@Override
 	public String toString() {
 		return "HelloWorldBean [msg=" + msg + "]";
 	}
-	
-	
-	
-
 }

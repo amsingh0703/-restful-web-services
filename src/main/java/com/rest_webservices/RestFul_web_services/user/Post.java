@@ -16,19 +16,20 @@ public class Post {
 	@GeneratedValue
 	private Integer id;
 	
-	@Size(min = 10)
+	@Size(min = 10, message = "Description must have at least 10 characters")
 	private String description;
-	public user getUser() {
-		return user;
-	}
-
-	public void setUser(user user) {
-		this.user = user;
-	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
-	private user user;
+	private User user;
+
+	public Post() {
+	}
+
+	public Post(Integer id, String description) {
+		this.id = id;
+		this.description = description;
+	}
 
 	public Integer getId() {
 		return id;
@@ -46,10 +47,16 @@ public class Post {
 		this.description = description;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", description=" + description + "]";
 	}
-	
-	
 }

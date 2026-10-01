@@ -1,10 +1,11 @@
 package com.rest_webservices.RestFul_web_services.user;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
-import static org. springframework. hateoas.server.mvc.WebMvcLinkBuilder .*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -20,52 +21,52 @@ import jakarta.validation.Valid;
 
 @RestController
 public class UserResource {
-	@Autowired
-	private UserDaoService service;
+
+	private final UserDaoService service;
 	
 	public UserResource(UserDaoService service) {
 		this.service = service;
 	}
-	//Get users
+
+	// GET all users
 	@GetMapping("/users")
-	public List<user> retriveAllUsers(){
+	public List<User> retrieveAllUsers() {
 		return service.findAll();
 	}
 	
-	//Get user
+	// GET single user
 	@GetMapping("/users/{id}")
-	public EntityModel<user> retriveAllUsers(@PathVariable Integer id){
-		user user=service.findOne(id);
+	public EntityModel<User> retrieveUserById(@PathVariable Integer id) {
+		User user = service.findOne(id);
 		
-		if(user == null) {
-			throw new  UserNotFoundException("id:"+id);
+		if (user == null) {
+			throw new UserNotFoundException("User not found with id: " + id);
 		}
 
-		EntityModel<user> entitymodel = EntityModel.of(user);
+		EntityModel<User> entityModel = EntityModel.of(user);
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+		entityModel.add(link.withRel("all-users"));
 		
-		WebMvcLinkBuilder link= linkTo(methodOn(this.getClass()).retriveAllUsers());
-		entitymodel.add(link.withRel("all-users"));
-		return entitymodel;
+		return entityModel;
 	}
 	
-	//post user
+	// POST user
 	@PostMapping("/users")
-	public ResponseEntity<user> createUser(@Valid @RequestBody user user) {
-		user saveuser = service.save(user);
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		User savedUser = service.save(user);
 
-		URI location = ServletUriComponentsBuilder.
-				fromCurrentRequest().
-				path("/{id}").
-				buildAndExpand(saveuser.getId()).
-				toUri();
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(savedUser.getId())
+				.toUri();
+
 		return ResponseEntity.created(location).build();
 	}
 	
+	// DELETE user
 	@DeleteMapping("/users/{id}")
-	public void Deleteuser(@PathVariable Integer id){
-		service.DeleteById(id);
-		
-		
+	public void deleteUser(@PathVariable Integer id) {
+		service.deleteById(id);
 	}
-	
 }

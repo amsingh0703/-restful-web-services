@@ -13,26 +13,26 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 @Entity(name = "user_details")
-public class user {
-	protected user(){
-		
-	}
+public class User {
 	
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Size(min=2,max=20)
-	//@JsonProperty("User_name")
+
+	@Size(min = 2, max = 20, message = "Name must be between 2 and 20 characters")
 	private String name;
-	@PastOrPresent
-	//@JsonProperty("Birth_Date")
+
+	@PastOrPresent(message = "Birth date should be in the past or present")
 	private LocalDate birthDate;
-	
+
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
-	private List<Post> post;
-	
-	public user(Integer id, String name, LocalDate birthDate) {
+	private List<Post> posts;
+
+	public User() {
+	}
+
+	public User(Integer id, String name, LocalDate birthDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -62,21 +62,26 @@ public class user {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
-	
 
-	public List<Post> getPost() {
-		return post;
+	public List<Post> getPosts() {
+		return posts;
 	}
 
-	public void setPost(List<Post> post) {
-		this.post = post;
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	// Backward compatibility getter for getPost()
+	public List<Post> getPost() {
+		return posts;
+	}
+
+	public void setPost(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
 	public String toString() {
-		return "user [id=" + id + ", name=" + name + ", birthDate=" + birthDate + "]";
+		return "User [id=" + id + ", name=" + name + ", birthDate=" + birthDate + "]";
 	}
-
-	
-	
 }
